@@ -35,7 +35,6 @@ class Withdraw
 
     /**
      * @ORM\Column(type="datetime_immutable")
-     * @Assert\LessThanOrEqual("today")
      */
     private $created_at;
 

@@ -6,6 +6,7 @@ use App\ApiResource\InvestmentResource;
 use App\Repository\InvestmentRepository;
 use App\Repository\UserRepository;
 use App\Service\InvestmentService;
+use App\Validator\InvesmentCreateValidator;
 use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -36,6 +37,8 @@ class InvestmentController extends AbstractController
         $userRepository = new UserRepository($registry);
 
         $data = $request->toArray();
+        InvesmentCreateValidator::validate($data);
+
         $data['user'] = $userRepository->find($data['user_id']);
         $investment = InvestmentService::entityMassAssigned($data);
 
@@ -63,7 +66,7 @@ class InvestmentController extends AbstractController
      * @Route("teste")
      */
     public function teste() {
-        $var = 30;
-        dd(20<$var);
+        $arr = [];
+        dd(new \DateTime($arr["coiso"] ?? null));
     }
 }

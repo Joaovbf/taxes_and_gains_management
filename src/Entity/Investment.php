@@ -20,14 +20,11 @@ class Investment
 
     /**
      * @ORM\Column(type="float")
-     * @Assert\NotBlank
-     * @Assert\PositiveOrZero
      */
     private $initial_amount;
 
     /**
      * @ORM\Column(type="datetime_immutable")
-     * @Assert\LessThanOrEqual("today")
      */
     private $created_at;
 

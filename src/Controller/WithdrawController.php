@@ -7,6 +7,7 @@ use App\Repository\InvestmentRepository;
 use App\Repository\WithdrawRepository;
 use App\Service\InvestmentService;
 use App\Service\WithdrawService;
+use App\Validator\WithdrawCreateValidator;
 use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -35,12 +36,10 @@ class WithdrawController extends AbstractController
     public function create(Request $request, ManagerRegistry $registry) {
         $withdrawRepository = new WithdrawRepository($registry);
         $investmentRepository = new InvestmentRepository($registry);
-        if ($withdrawRepository->findOneByInvestment($request->toArray()["investment_id"]) != null){
-            throw new \Exception("This investment has already withdrawn");
-        }
         $requestValues = $request->toArray();
-
         $investment = $investmentRepository->find($requestValues['investment_id']);
+
+        WithdrawCreateValidator::validate($investment, $requestValues);
 
         $createdAt = isset($requestValues['created_at'])
             ? new \DateTimeImmutable($requestValues['created_at'])
