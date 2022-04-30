@@ -13,7 +13,9 @@ class WithdrawResource extends Resource
 {
     public function make($withdraw) {
         return [
-
+            "amount" => $withdraw->getAmount(),
+            "taxes" => $withdraw->getTaxes(),
+            "investment" => (new InvestmentResource)->make($withdraw->getInvestment())
         ];
     }
 }
