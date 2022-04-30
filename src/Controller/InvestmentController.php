@@ -39,7 +39,7 @@ class InvestmentController extends AbstractController
         $data = $request->toArray();
         InvesmentCreateValidator::validate($data);
 
-        $data['user'] = $userRepository->find($data['user_id']);
+        $data['user'] = $userRepository->findOrFail($data['user_id']);
         $investment = InvestmentService::entityMassAssigned($data);
 
         $investmentRepository->add($investment);
@@ -55,18 +55,10 @@ class InvestmentController extends AbstractController
     public function find($id, ManagerRegistry $registry) {
         $investmentRepository = new InvestmentRepository($registry);
 
-        $investment = $investmentRepository->find($id);
+        $investment = $investmentRepository->findOrFail($id);
 
         return $this->json([
             "data" => (new InvestmentResource)->make($investment)
         ]);
-    }
-
-    /**
-     * @Route("teste")
-     */
-    public function teste() {
-        $arr = [];
-        dd(new \DateTime($arr["coiso"] ?? null));
     }
 }

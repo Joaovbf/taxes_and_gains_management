@@ -37,7 +37,7 @@ class WithdrawController extends AbstractController
         $withdrawRepository = new WithdrawRepository($registry);
         $investmentRepository = new InvestmentRepository($registry);
         $requestValues = $request->toArray();
-        $investment = $investmentRepository->find($requestValues['investment_id']);
+        $investment = $investmentRepository->findOrFail($requestValues['investment_id']);
 
         WithdrawCreateValidator::validate($investment, $requestValues);
 
@@ -74,7 +74,7 @@ class WithdrawController extends AbstractController
     public function find($id, ManagerRegistry $registry) {
         $withdrawRepository = new WithdrawRepository($registry);
 
-        $withdraw = $withdrawRepository->find($id);
+        $withdraw = $withdrawRepository->findOrFail($id);
 
         return $this->json([
             "data" => (new WithdrawResource)->make($withdraw)

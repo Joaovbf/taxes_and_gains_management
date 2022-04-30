@@ -48,6 +48,14 @@ class InvestmentRepository extends ServiceEntityRepository
         }
     }
 
+    public function findOrFail($id){
+        $entity = $this->find($id);
+        if ($entity == null) {
+            throw new \Exception("Couldnt find this entity");
+        }
+        return $entity;
+    }
+
     public function findByUserPaginated(PaginatorInterface $paginator, $user_id, $page, $perPage)
     {
         $query = $this->createQueryBuilder('i')

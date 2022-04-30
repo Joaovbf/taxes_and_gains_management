@@ -62,7 +62,7 @@ class UserController extends AbstractController
     public function update(Request $request, ManagerRegistry $registry, $id) {
         $userRepository = new UserRepository($registry);
 
-        $user = $userRepository->find($id);
+        $user = $userRepository->findOrFail($id);
         $user->setName($request->toArray()['name']);
 
         $userRepository->add($user);
@@ -77,7 +77,7 @@ class UserController extends AbstractController
      */
     public function find($id, ManagerRegistry $registry) {
         $userRepository = new UserRepository($registry);
-        $user = $userRepository->find($id);
+        $user = $userRepository->findOrFail($id);
         return $this->json([
             "data" => (new UserResource)->make($user),
         ]);
@@ -90,7 +90,7 @@ class UserController extends AbstractController
         $userRepossitory = new UserRepository($registry);
         $investmentRepository = new InvestmentRepository($registry);
 
-        $user = $userRepossitory->find($id);
+        $user = $userRepossitory->findOrFail($id);
 
         $page = $request->query->get("page") ?? 1;
         $perPage = $request->query->get("perPage") ?? 25;

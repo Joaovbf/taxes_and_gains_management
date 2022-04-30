@@ -48,6 +48,13 @@ class UserRepository extends ServiceEntityRepository
         }
     }
 
+    public function findOrFail($id){
+        $entity = $this->find($id);
+        if ($entity == null) {
+            throw new \Exception("Couldnt find this entity");
+        }
+        return $entity;
+    }
     // /**
     //  * @return User[] Returns an array of User objects
     //  */

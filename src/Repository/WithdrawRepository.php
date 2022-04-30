@@ -47,14 +47,12 @@ class WithdrawRepository extends ServiceEntityRepository
         }
     }
 
-    public function findOneByInvestment($investment_id): ?Withdraw
-    {
-        return $this->createQueryBuilder('w')
-            ->andWhere('w.investment = :val')
-            ->setParameter('val', $investment_id)
-            ->getQuery()
-            ->getOneOrNullResult()
-            ;
+    public function findOrFail($id){
+        $entity = $this->find($id);
+        if ($entity == null) {
+            throw new \Exception("Couldnt find this entity");
+        }
+        return $entity;
     }
 
     // /**
