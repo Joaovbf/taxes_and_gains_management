@@ -55,12 +55,11 @@ class InvestmentService
         $investment = new Investment();
 
         //defining inicial date
-        if (isset($data['creation_date']))
-            $created_at = new \DateTimeImmutable($data['creation_date']);
+        if (isset($data['created_at']))
+            $created_at = new \DateTimeImmutable($data['created_at']);
         else
             $created_at = new \DateTimeImmutable();
-
-        $investment->setAmount($data['amount']);
+;
         $investment->setInitialAmount($data['amount']);
         $investment->setCreatedAt($created_at);
         $investment->setUser($data['user']);

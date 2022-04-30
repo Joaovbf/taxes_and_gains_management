@@ -7,6 +7,7 @@ use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\OptimisticLockException;
 use Doctrine\ORM\ORMException;
 use Doctrine\Persistence\ManagerRegistry;
+use Knp\Component\Pager\PaginatorInterface;
 
 /**
  * @extends ServiceEntityRepository<Investment>
@@ -47,6 +48,20 @@ class InvestmentRepository extends ServiceEntityRepository
         }
     }
 
+    public function findByUserPaginated(PaginatorInterface $paginator, $user_id, $page, $perPage)
+    {
+        $query = $this->createQueryBuilder('i')
+            ->andWhere('i.user = :val')
+            ->setParameter('val', $user_id)
+            ->orderBy('i.id', 'ASC')
+            ->getQuery();
+        return $paginator->paginate(
+            $query, /* query NOT result */
+            $page, /*page number*/
+            $perPage /*limit per page*/
+        );
+
+    }
     // /**
     //  * @return Investment[] Returns an array of Investment objects
     //  */

@@ -4,6 +4,7 @@ namespace App\Entity;
 
 use App\Repository\WithdrawRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass=WithdrawRepository::class)
@@ -34,6 +35,7 @@ class Withdraw
 
     /**
      * @ORM\Column(type="datetime_immutable")
+     * @Assert\LessThanOrEqual("today")
      */
     private $created_at;
 

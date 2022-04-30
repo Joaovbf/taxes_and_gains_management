@@ -2,10 +2,13 @@
 
 namespace App\Controller;
 
+use App\ApiResource\InvestmentResource;
 use App\ApiResource\UserResource;
 use App\Entity\User;
 use App\Repository\InvestmentRepository;
 use App\Repository\UserRepository;
+use Knp\Component\Pager\Pagination\PaginationInterface;
+use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -83,7 +86,7 @@ class UserController extends AbstractController
     /**
      * @Route("/user/{id}/investments", methods={"GET"})
      */
-    public function investments($id, Request $request, ManagerRegistry $registry) {
+    public function investments($id, Request $request, PaginatorInterface $paginator, ManagerRegistry $registry) {
         $userRepossitory = new UserRepository($registry);
         $investmentRepository = new InvestmentRepository($registry);
 
@@ -92,5 +95,13 @@ class UserController extends AbstractController
         $page = $request->query->get("page") ?? 1;
         $perPage = $request->query->get("perPage") ?? 25;
 
+        $investments = $investmentRepository->findByUserPaginated($paginator, $user->getId(), $page, $perPage);
+
+        return $this->json([
+            "data" => (new InvestmentResource)->collection($investments->getItems()),
+            "page" => $page,
+            "per_page" => $perPage,
+            "total" => $investments->getTotalItemCount()
+        ]);
     }
 }
